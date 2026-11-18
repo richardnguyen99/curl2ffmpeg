@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <img src="public/logo.png" alt="Project Logo" width="64" height="64" />
+  <h1>curl-2-ffmpeg</h1>
+</div>
 
-## Getting Started
+## Overview
 
-First, run the development server:
+Inspired by the [`curl2ffmpeg`](https://github.com/windyakin/curl2ffmpeg) by [windyakin](https://github.com/windyakin), I created this project to provide more functionality and flexibility for converting `curl` commands to `ffmpeg` commands on different platforms and shells.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+This project strictly aims to convert `curl` texts that are copied from modern browsers into equivalent `ffmpeg` commands to prevent HTTP errors for missing required headers like `User-Agent`, `Referer`, and `Cookie`.
+
+## Features
+
+- Provide a basic conversion from `curl` to `ffmpeg` commands.
+- Support multiple platforms and shells.
+- Support flags customization for `ffmpeg` commands.
+- Offer QoL features such as copy to clipboard, custom output file name and detailed error output.
+
+It does not:
+
+- ❌ Validate `curl` or `ffmpeg` commands
+- ❌ Check `ffmpeg` command's runtime output
+- ❌ Execute `ffmpeg` commands automatically
+
+### Supported platforms / shells
+
+- [ ] Bash (Linux)
+- [ ] Fish
+- [ ] Zsh
+- [ ] PowerShell (Windows)
+- [ ] Command Prompt (Windows)
+
+### Ffmpeg options
+
+A standard `ffmpeg` command consists of 3 main parts:
+
+```text
+> ffmpeg [global options] [input options] -i input_file [output options] output_file
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- [ ] Global options
+- [ ] Input options
+- [ ] Output options
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Other functionalities
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- [ ] Modify inline `curl`'s headers
+- [ ] Support `sudo` prefix for `ffmpeg` commands
+- [ ] Support history of past conversions
+- [ ] Support persistent configuration for `ffmpeg` commands
+- [ ] Provide detailed debug output for conversions
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
