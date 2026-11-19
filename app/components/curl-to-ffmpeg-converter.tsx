@@ -13,8 +13,12 @@ export function CurlToFfmpegConverter() {
   const convertCurlToFfmpeg = (curlCommand: string): string => {
     if (!curlCommand.trim()) return '';
 
-    // Remove leading/trailing whitespace
-    let curl = curlCommand.trim();
+    // Remove leading/trailing whitespace and backslashes (multiline format)
+    let curl = curlCommand
+      .trim()
+      .split('\n')
+      .map(line => line.trim().replace(/\\$/, ''))
+      .join(' ');
 
     // Remove 'curl' command if it starts with it
     if (curl.startsWith('curl ')) {
@@ -26,39 +30,45 @@ export function CurlToFfmpegConverter() {
     let outputFile = 'output.mp4';
     const headers: Record<string, string> = {};
 
-    // Parse curl arguments
-    const args = curl.match(/(?:[^\s"]+|"[^"]*")+/g) || [];
+    // Handle the curl command format with better parsing
+    // Split by -H or --header flags while preserving quoted values
+    const headerPattern = /(?:^|\s)(?:-H|--header)\s+(['"])(.*?)\1/g;
+    const urlPattern = /(?:^|\s)(?:--url)\s+(['"])(.*?)\1|(?:^|\s)(['"])([^'"]*\.m3u8|https?:\/\/[^'"]+)\3/g;
+    const outputPattern = /(?:^|\s)(?:-o|--output)\s+(['"])(.*?)\1/g;
 
-    for (let i = 0; i < args.length; i++) {
-      const arg = args[i].replace(/^"|"$/g, '');
-
-      if (arg === '-X' || arg === '--request') {
-        // HTTP method (not used yet, reserved for future expansion)
-        i++;
-      } else if (arg === '-H' || arg === '--header') {
-        const header = args[++i]?.replace(/^"|"$/g, '');
-        if (header) {
-          const [key, value] = header.split(': ');
-          headers[key] = value;
-        }
-      } else if (arg === '-d' || arg === '--data' || arg === '--data-raw') {
-        // POST data (not used yet, reserved for future expansion)
-        i++;
-      } else if (arg === '-o' || arg === '--output') {
-        outputFile = args[++i]?.replace(/^"|"$/g, '') || outputFile;
-      } else if (!arg.startsWith('-') && !url) {
-        url = arg;
+    // Extract headers
+    let headerMatch;
+    while ((headerMatch = headerPattern.exec(curl)) !== null) {
+      const headerValue = headerMatch[2];
+      const [key, value] = headerValue.split(': ');
+      if (key && value) {
+        headers[key.trim()] = value.trim();
       }
     }
 
-    // Build ffmpeg command
-    if (url) {
-      ffmpegParts.push('-i', `"${url}"`);
+    // Extract URL
+    let urlMatch;
+    while ((urlMatch = urlPattern.exec(curl)) !== null) {
+      url = urlMatch[2] || urlMatch[4];
+      if (url) break;
     }
 
-    // Add common headers as ffmpeg headers
-    if (headers['User-Agent']) {
-      ffmpegParts.push('-user-agent', `"${headers['User-Agent']}"`);
+    // Extract output file
+    let outputMatch;
+    while ((outputMatch = outputPattern.exec(curl)) !== null) {
+      outputFile = outputMatch[2];
+    }
+
+    // Build ffmpeg command
+    ffmpegParts.push('-i', `"${url}"`);
+
+    // If we have headers, format them for ffmpeg
+    if (Object.keys(headers).length > 0) {
+      const headersList = Object.entries(headers)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join('\\r\\n');
+
+      ffmpegParts.push('-headers', `"${headersList}"`);
     }
 
     // Add output file
@@ -74,8 +84,13 @@ export function CurlToFfmpegConverter() {
   };
 
   const handleSampleCurl = () => {
-    const sampleCurl =
-      'curl -H "User-Agent: Mozilla/5.0" -o video.mp4 "https://example.com/video.mp4"';
+    const sampleCurl = `curl --url 'https://b.surrit.com/b3c0f568-44e6-4669-9dfa-4c3efb3599e1/720p/video.m3u8' \\
+  -H 'accept: */*' \\
+  -H 'accept-language: en-US,en;q=0.5' \\
+  -H 'cache-control: no-cache' \\
+  -H 'origin: https://missav.ai' \\
+  -H 'pragma: no-cache' \\
+  -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36'`;
     setInput(sampleCurl);
     setOutput(convertCurlToFfmpeg(sampleCurl));
   };
