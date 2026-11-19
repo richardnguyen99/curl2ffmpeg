@@ -4,83 +4,17 @@ import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Copy, Download, RefreshCw } from 'lucide-react';
+import { convertCurlToFfmpegBash } from '@/lib/converter';
 
 export function CurlToFfmpegConverter() {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const convertCurlToFfmpeg = (curlCommand: string): string => {
-    if (!curlCommand.trim()) return '';
-
-    // Remove leading/trailing whitespace and backslashes (multiline format)
-    let curl = curlCommand
-      .trim()
-      .split('\n')
-      .map(line => line.trim().replace(/\\$/, ''))
-      .join(' ');
-
-    // Remove 'curl' command if it starts with it
-    if (curl.startsWith('curl ')) {
-      curl = curl.slice(5);
-    }
-
-    const ffmpegParts: string[] = ['ffmpeg'];
-    let url = '';
-    let outputFile = 'output.mp4';
-    const headers: Record<string, string> = {};
-
-    // Handle the curl command format with better parsing
-    // Split by -H or --header flags while preserving quoted values
-    const headerPattern = /(?:^|\s)(?:-H|--header)\s+(['"])(.*?)\1/g;
-    const urlPattern = /(?:^|\s)(?:--url)\s+(['"])(.*?)\1|(?:^|\s)(['"])([^'"]*\.m3u8|https?:\/\/[^'"]+)\3/g;
-    const outputPattern = /(?:^|\s)(?:-o|--output)\s+(['"])(.*?)\1/g;
-
-    // Extract headers
-    let headerMatch;
-    while ((headerMatch = headerPattern.exec(curl)) !== null) {
-      const headerValue = headerMatch[2];
-      const [key, value] = headerValue.split(': ');
-      if (key && value) {
-        headers[key.trim()] = value.trim();
-      }
-    }
-
-    // Extract URL
-    let urlMatch;
-    while ((urlMatch = urlPattern.exec(curl)) !== null) {
-      url = urlMatch[2] || urlMatch[4];
-      if (url) break;
-    }
-
-    // Extract output file
-    let outputMatch;
-    while ((outputMatch = outputPattern.exec(curl)) !== null) {
-      outputFile = outputMatch[2];
-    }
-
-    // Build ffmpeg command
-    ffmpegParts.push('-i', `"${url}"`);
-
-    // If we have headers, format them for ffmpeg
-    if (Object.keys(headers).length > 0) {
-      const headersList = Object.entries(headers)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join('\\r\\n');
-
-      ffmpegParts.push('-headers', `"${headersList}"`);
-    }
-
-    // Add output file
-    ffmpegParts.push(`"${outputFile}"`);
-
-    return ffmpegParts.join(' ');
-  };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setInput(value);
-    setOutput(convertCurlToFfmpeg(value));
+    setOutput(convertCurlToFfmpegBash(value));
   };
 
   const handleSampleCurl = () => {
@@ -92,7 +26,7 @@ export function CurlToFfmpegConverter() {
   -H 'pragma: no-cache' \\
   -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36'`;
     setInput(sampleCurl);
-    setOutput(convertCurlToFfmpeg(sampleCurl));
+    setOutput(convertCurlToFfmpegBash(sampleCurl));
   };
 
   const handleClear = () => {
@@ -108,7 +42,7 @@ export function CurlToFfmpegConverter() {
     reader.onload = () => {
       const text = reader.result as string;
       setInput(text);
-      setOutput(convertCurlToFfmpeg(text));
+      setOutput(convertCurlToFfmpegBash(text));
     };
     reader.readAsText(file);
   };
