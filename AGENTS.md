@@ -54,6 +54,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - Always check existing ShadCN UI components in `app/components/ui` before creating new ones to maintain consistency and avoid duplication.
 - Use [ShadCN UI Button](https://ui.shadcn.com/docs/components/button) for consistent button styling and behavior across the application, instead of native HTML `<button>` tags.
+- Use [ShadCN UI Input](https://ui.shadcn.com/docs/components/input) for consistent input styling and behavior across the application, instead of native HTML `<input>` tags.
+- Use [ShadCN UI Textarea](https://ui.shadcn.com/docs/components/textarea) for consistent textarea styling and behavior across the application, instead of native HTML `<textarea>` tags.
 
 
 ## Writing conversation summary
