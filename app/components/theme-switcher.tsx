@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Moon, Sun } from 'lucide-react';
-import { useLayoutEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Moon, Sun } from "lucide-react";
+import { useLayoutEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 type ThemeState = {
   isDark: boolean;
@@ -18,21 +18,21 @@ export function ThemeSwitcher() {
   // Synchronize DOM theme class with component state on mount.
   // This is a standard Next.js hydration pattern where we sync state.
   useLayoutEffect(() => {
-    const isDarkMode = document.documentElement.classList.contains('dark');
+    const isDarkMode = document.documentElement.classList.contains("dark");
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setState({ isDark: isDarkMode, mounted: true });
   }, []);
 
   const toggleTheme = () => {
     const html = document.documentElement;
-    const willBeDark = !html.classList.contains('dark');
+    const willBeDark = !html.classList.contains("dark");
 
     if (willBeDark) {
-      html.classList.add('dark');
-      localStorage.theme = 'dark';
+      html.classList.add("dark");
+      localStorage.theme = "dark";
     } else {
-      html.classList.remove('dark');
-      localStorage.theme = 'light';
+      html.classList.remove("dark");
+      localStorage.theme = "light";
     }
 
     setState((prev) => ({ ...prev, isDark: willBeDark }));
@@ -45,9 +45,7 @@ export function ThemeSwitcher() {
       onClick={toggleTheme}
       variant="ghost"
       size="icon"
-      aria-label={
-        state.isDark ? 'Switch to light mode' : 'Switch to dark mode'
-      }
+      aria-label={state.isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       {state.isDark ? (
         <Sun data-icon="inline-start" />

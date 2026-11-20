@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { CurlToFfmpegConverter } from './components/curl-to-ffmpeg-converter';
+import { CurlToFfmpegConverter } from "./components/curl-to-ffmpeg-converter";
 
 export default function Home() {
   return (

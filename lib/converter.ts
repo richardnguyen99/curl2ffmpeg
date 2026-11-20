@@ -6,36 +6,37 @@
  * @returns The equivalent ffmpeg command
  */
 export function convertCurlToFfmpegBash(curlCommand: string): string {
-  if (!curlCommand.trim()) return '';
+  if (!curlCommand.trim()) return "";
 
   // Remove leading/trailing whitespace and backslashes (multiline format)
   let curl = curlCommand
     .trim()
-    .split('\n')
-    .map(line => line.trim().replace(/\\$/, ''))
-    .join(' ');
+    .split("\n")
+    .map((line) => line.trim().replace(/\\$/, ""))
+    .join(" ");
 
   // Remove 'curl' command if it starts with it
-  if (curl.startsWith('curl ')) {
+  if (curl.startsWith("curl ")) {
     curl = curl.slice(5);
   }
 
-  const ffmpegParts: string[] = ['ffmpeg'];
-  let url = '';
-  let outputFile = 'output.mp4';
+  const ffmpegParts: string[] = ["ffmpeg"];
+  let url = "";
+  let outputFile = "output.mp4";
   const headers: Record<string, string> = {};
 
   // Handle the curl command format with better parsing
   // Split by -H or --header flags while preserving quoted values
   const headerPattern = /(?:^|\s)(?:-H|--header)\s+(['"])(.*?)\1/g;
-  const urlPattern = /(?:^|\s)(?:--url)\s+(['"])(.*?)\1|(?:^|\s)(['"])([^'"]*\.m3u8|https?:\/\/[^'"]+)\3/g;
+  const urlPattern =
+    /(?:^|\s)(?:--url)\s+(['"])(.*?)\1|(?:^|\s)(['"])([^'"]*\.m3u8|https?:\/\/[^'"]+)\3/g;
   const outputPattern = /(?:^|\s)(?:-o|--output)\s+(['"])(.*?)\1/g;
 
   // Extract headers
   let headerMatch;
   while ((headerMatch = headerPattern.exec(curl)) !== null) {
     const headerValue = headerMatch[2];
-    const [key, value] = headerValue.split(': ');
+    const [key, value] = headerValue.split(": ");
     if (key && value) {
       headers[key.trim()] = value.trim();
     }
@@ -60,14 +61,14 @@ export function convertCurlToFfmpegBash(curlCommand: string): string {
       .map(([key, value]) => `$'${key}: ${value}'`)
       .join("$'\\r\\n'");
 
-    ffmpegParts.push('-headers', `${headersList}$'\\r\\n'`);
+    ffmpegParts.push("-headers", `${headersList}$'\\r\\n'`);
   }
 
   // Build ffmpeg command
-  ffmpegParts.push('-i', `"${url}"`);
+  ffmpegParts.push("-i", `"${url}"`);
 
   // Add output file
   ffmpegParts.push(`-c copy "${outputFile}"`);
 
-  return ffmpegParts.join(' ');
+  return ffmpegParts.join(" ");
 }

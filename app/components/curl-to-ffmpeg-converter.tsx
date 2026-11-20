@@ -1,73 +1,89 @@
-'use client';
+"use client";
 
-import { useState, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Copy, Download, RefreshCw } from 'lucide-react';
-import { convertCurlToFfmpegBash } from '@/lib/converter';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Copy, Zap, Trash2 } from "lucide-react";
+import { toast } from "@/components/ui/toast";
+import { convertCurlToFfmpegBash } from "@/lib/converter";
 
 export function CurlToFfmpegConverter() {
-  const [input, setInput] = useState('');
-  const [output, setOutput] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setInput(value);
-    setOutput(convertCurlToFfmpegBash(value));
   };
 
-  const handleSampleCurl = () => {
-    const sampleCurl = `curl --url 'https://b.surrit.com/b3c0f568-44e6-4669-9dfa-4c3efb3599e1/720p/video.m3u8' \\
-  -H 'accept: */*' \\
-  -H 'accept-language: en-US,en;q=0.5' \\
-  -H 'cache-control: no-cache' \\
-  -H 'origin: https://missav.ai' \\
-  -H 'pragma: no-cache' \\
-  -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36'`;
-    setInput(sampleCurl);
-    setOutput(convertCurlToFfmpegBash(sampleCurl));
-  };
+  const handleConvert = () => {
+    if (!input.trim()) {
+      toast.add({
+        title: "Empty input",
+        description: "Please paste a curl command to convert.",
+        type: "error",
+      });
+      return;
+    }
 
-  const handleClear = () => {
-    setInput('');
-    setOutput('');
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const text = reader.result as string;
-      setInput(text);
-      setOutput(convertCurlToFfmpegBash(text));
-    };
-    reader.readAsText(file);
-  };
-
-  const handleCopyOutput = async () => {
-    if (!output) return;
     try {
-      await navigator.clipboard.writeText(output);
-    } catch (err) {
-      console.error('Failed to copy:', err);
+      const result = convertCurlToFfmpegBash(input);
+      if (result) {
+        setOutput(result);
+        toast.add({
+          title: "Conversion successful",
+          description: "Your curl command has been converted to ffmpeg format.",
+          type: "success",
+        });
+      } else {
+        toast.add({
+          title: "Conversion failed",
+          description: "Could not convert the provided curl command.",
+          type: "error",
+        });
+      }
+    } catch (error) {
+      toast.add({
+        title: "Conversion error",
+        description: `An error occurred: ${error instanceof Error ? error.message : "Unknown error"}`,
+        type: "error",
+      });
     }
   };
 
-  const handleDownloadOutput = () => {
-    if (!output) return;
-    const element = document.createElement('a');
-    element.setAttribute(
-      'href',
-      `data:text/plain;charset=utf-8,${encodeURIComponent(output)}`
-    );
-    element.setAttribute('download', 'converted-command.sh');
-    element.style.display = 'none';
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+  const handleClear = () => {
+    setInput("");
+    setOutput("");
+    toast.add({
+      title: "Cleared",
+      description: "Input and output have been cleared.",
+      type: "success",
+    });
+  };
+
+  const handleCopyOutput = async () => {
+    if (!output) {
+      toast.add({
+        title: "Nothing to copy",
+        description: "Please convert a curl command first.",
+        type: "error",
+      });
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(output);
+      toast.add({
+        title: "Copied to clipboard",
+        description: "The ffmpeg command has been copied.",
+        type: "success",
+      });
+    } catch (err) {
+      toast.add({
+        title: "Copy failed",
+        description: "Could not copy to clipboard. Please try again.",
+        type: "error",
+      });
+    }
   };
 
   return (
@@ -75,9 +91,7 @@ export function CurlToFfmpegConverter() {
       {/* Input Section */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-foreground">
-            curl
-          </label>
+          <label className="text-sm font-medium text-foreground">curl</label>
           <span className="text-xs text-muted-foreground">
             {input.length} characters
           </span>
@@ -92,46 +106,30 @@ export function CurlToFfmpegConverter() {
 
         <div className="flex gap-2">
           <Button
-            onClick={handleSampleCurl}
-            variant="outline"
+            onClick={handleConvert}
+            variant="default"
             size="sm"
             className="flex-1"
           >
-            Sample curl
+            <Zap className="size-4 mr-1" />
+            Convert
           </Button>
           <Button
             onClick={handleClear}
-            variant="outline"
+            variant="destructive"
             size="sm"
             className="flex-1"
           >
-            <RefreshCw className="size-4 mr-1" />
+            <Trash2 className="size-4 mr-1" />
             Clear
           </Button>
-          <Button
-            onClick={() => fileInputRef.current?.click()}
-            variant="outline"
-            size="sm"
-            className="flex-1"
-          >
-            Upload file
-          </Button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".txt,.sh"
-            onChange={handleFileUpload}
-            className="hidden"
-          />
         </div>
       </div>
 
       {/* Output Section */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-foreground">
-            ffmpeg
-          </label>
+          <label className="text-sm font-medium text-foreground">ffmpeg</label>
           <span className="text-xs text-muted-foreground">
             {output.length} characters
           </span>
@@ -154,16 +152,6 @@ export function CurlToFfmpegConverter() {
           >
             <Copy className="size-4 mr-1" />
             Copy
-          </Button>
-          <Button
-            onClick={handleDownloadOutput}
-            disabled={!output}
-            variant="outline"
-            size="sm"
-            className="flex-1"
-          >
-            <Download className="size-4 mr-1" />
-            Download
           </Button>
         </div>
       </div>
