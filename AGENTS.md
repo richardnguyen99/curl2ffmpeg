@@ -58,6 +58,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Use [ShadCN UI Textarea](https://ui.shadcn.com/docs/components/textarea) for consistent textarea styling and behavior across the application, instead of native HTML `<textarea>` tags.
 - Use [ShadCN UI Toast](https://ui.shadcn.com/docs/components/toast) for consistent toast notifications and alerts across the application.
 - Use [ShadCN UI Tabs](https://ui.shadcn.com/docs/components/tabs) for consistent set of layered sections that display different content based on the selected tab one at a time.
+- Use [ShadCN UI Accordion](https://ui.shadcn.com/docs/components/accordion) for consistent collapsible sections that can show or hide content within the application.
 
 ## Writing conversation summary
 

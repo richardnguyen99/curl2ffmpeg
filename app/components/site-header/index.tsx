@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ThemeSwitcher } from "./theme-switcher";
+import { ThemeSwitcher } from "../theme-switcher";
+import NavTabs from "./nav-tabs";
 
 export function SiteHeader() {
   return (
@@ -16,42 +17,8 @@ export function SiteHeader() {
           className="flex h-16 items-center justify-between"
           data-slot="site-header-flex-container"
         >
-          {/* Left side: Logo, Guides, About */}
-          <div className="flex items-center gap-8" data-slot="site-header-left">
-            {/* Logo */}
-            <Link
-              href="/"
-              className="flex items-center gap-2 font-bold text-lg"
-            >
-              <Image
-                src="/logo.png"
-                alt="curl2ffmpeg"
-                width={32}
-                height={32}
-                className="h-8 w-8"
-                loading="eager"
-              />
-              <span className="hidden sm:inline text-foreground">
-                curl2ffmpeg
-              </span>
-            </Link>
-
-            {/* Navigation links */}
-            <nav className="hidden md:flex gap-6">
-              <Link
-                href="/guides"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Guides
-              </Link>
-              <Link
-                href="/about"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              >
-                About
-              </Link>
-            </nav>
-          </div>
+          {/* Left side: Logo and navigation tabs */}
+          <NavTabs />
 
           {/* Right side: Theme toggle, GitHub link */}
           <div
