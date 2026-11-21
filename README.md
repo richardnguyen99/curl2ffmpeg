@@ -22,11 +22,12 @@ It does not:
 - ❌ Check `ffmpeg` command's runtime output
 - ❌ Execute `ffmpeg` commands automatically
 
-### Supported platforms / shells
+### Supported platforms / shells / programs
 
 - [ ] Bash (Linux)
-- [ ] Fish
-- [ ] Zsh
+- [ ] [`yt-dlp`](https://github.com/yt-dlp/yt-dlp)
+- [ ] [`Fish Shell`](https://github.com/fish-shell/fish-shell)
+- [ ] [`zsh`](https://github.com/zsh-users/zsh)
 - [ ] PowerShell (Windows)
 - [ ] Command Prompt (Windows)
 
@@ -53,4 +54,3 @@ A standard `ffmpeg` command consists of 3 main parts:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-

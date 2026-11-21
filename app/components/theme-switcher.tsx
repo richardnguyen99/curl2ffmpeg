@@ -46,6 +46,7 @@ export function ThemeSwitcher() {
       variant="ghost"
       size="icon"
       aria-label={state.isDark ? "Switch to light mode" : "Switch to dark mode"}
+      data-slot="theme-switcher"
     >
       {state.isDark ? (
         <Sun data-icon="inline-start" />

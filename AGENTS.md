@@ -18,7 +18,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   - `npm run start` for starting the production server
   - `npm run lint` for running the linter
   - `npx shadcn@latest add <component>` for adding ShadCN UI components to the project
-  
+
 ## Theme
 
 - The application supports both light and dark themes via Tailwind CSS
@@ -27,7 +27,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Tailwind CSS theme and color system
 
-- For conditional styling, use `app/libs/utils.ts` and the `cn` function to combine Tailwind CSS class names conditionally.
+- For conditional styling, use `libs/utils.ts` and the `cn` function to combine Tailwind CSS class names conditionally.
 
   An example of using the `cn` function for conditional styling:
 
@@ -57,6 +57,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Use [ShadCN UI Input](https://ui.shadcn.com/docs/components/input) for consistent input styling and behavior across the application, instead of native HTML `<input>` tags.
 - Use [ShadCN UI Textarea](https://ui.shadcn.com/docs/components/textarea) for consistent textarea styling and behavior across the application, instead of native HTML `<textarea>` tags.
 - Use [ShadCN UI Toast](https://ui.shadcn.com/docs/components/toast) for consistent toast notifications and alerts across the application.
+- Use [ShadCN UI Tabs](https://ui.shadcn.com/docs/components/tabs) for consistent set of layered sections that display different content based on the selected tab one at a time.
 
 ## Writing conversation summary
 

@@ -4,11 +4,20 @@ import { ThemeSwitcher } from "./theme-switcher";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-black/10 bg-background/80 backdrop-blur-md dark:border-white/10 dark:bg-background/80">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+    <header
+      className="sticky top-0 z-50 w-full border-b border-black/10 bg-background/80 backdrop-blur-md"
+      data-slot="site-header"
+    >
+      <div
+        className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+        data-slot="site-header-wrapper"
+      >
+        <div
+          className="flex h-16 items-center justify-between"
+          data-slot="site-header-flex-container"
+        >
           {/* Left side: Logo, Guides, About */}
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-8" data-slot="site-header-left">
             {/* Logo */}
             <Link
               href="/"
@@ -20,6 +29,7 @@ export function SiteHeader() {
                 width={32}
                 height={32}
                 className="h-8 w-8"
+                loading="eager"
               />
               <span className="hidden sm:inline text-foreground">
                 curl2ffmpeg
@@ -44,7 +54,10 @@ export function SiteHeader() {
           </div>
 
           {/* Right side: Theme toggle, GitHub link */}
-          <div className="flex items-center gap-4">
+          <div
+            className="flex items-center gap-4"
+            data-slot="site-header-right"
+          >
             <ThemeSwitcher />
 
             <Link
