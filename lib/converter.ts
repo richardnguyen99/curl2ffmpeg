@@ -72,3 +72,38 @@ export function convertCurlToFfmpegBash(curlCommand: string): string {
 
   return ffmpegParts.join(" ");
 }
+
+export function getConverterTitle(converter: string = "bash"): string {
+  let converterTitle = "";
+  switch (converter) {
+    case "bash":
+      converterTitle = "Bash";
+      break;
+    case "python":
+      converterTitle = "Python";
+      break;
+    case "nodejs":
+      converterTitle = "Node.js";
+      break;
+    case "yt-dlp":
+      converterTitle = "yt-dlp";
+      break;
+    case "fish":
+      converterTitle = "Fish";
+      break;
+    case "zsh":
+      converterTitle = "Zsh";
+      break;
+    case "cmd":
+      converterTitle = "Command Prompt";
+      break;
+    case "powershell":
+      converterTitle = "PowerShell";
+      break;
+    default:
+      converterTitle = "Bash";
+      break;
+  }
+
+  return `${converterTitle} converter - curl2ffmpeg`;
+}

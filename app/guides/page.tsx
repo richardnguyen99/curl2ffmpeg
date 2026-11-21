@@ -48,8 +48,8 @@ const guides = [
     content: (
       <>
         <p>
-          It's mainly used to download media content such as video and audio
-          streams from the command line.
+          It&apos;s mainly used to download media content such as video and
+          audio streams from the command line.
         </p>
         <p>
           Some sites require specific headers to be included in the request,

@@ -13,12 +13,13 @@ export default function PrivacyPage() {
           <Separator />
 
           <p>
-            AS USED IN THESE TERMS OF USE, "PROJECT", "WE", "US", "OUR" REFER TO
-            THE PROJECT AND THE PEOPLE BEHIND IT.
+            AS USED IN THESE TERMS OF USE, &quot;PROJECT&quot;, &quot;WE&quot;,
+            &quot;US&quot;, &quot;OUR&quot; REFER TO THE PROJECT AND THE PEOPLE
+            BEHIND IT.
           </p>
           <p>
-            AS USED IN THESE TERMS OF USE, "YOU" REFERS TO THE INDIVIDUAL OR
-            ENTITY ACCESSING OR USING THE PROJECT.
+            AS USED IN THESE TERMS OF USE, &quot;YOU&quot; REFERS TO THE
+            INDIVIDUAL OR ENTITY ACCESSING OR USING THE PROJECT.
           </p>
 
           <h2>ACCEPTANCE OF TERMS</h2>

@@ -3,20 +3,30 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FfmpegBashConverter } from "./converter-bash";
 import { FfmpegPythonConverter } from "./converter-python";
 import { FfmpegNodeJsConverter } from "./converter-nodejs";
+import Link from "next/link";
+import { ACCEPTED_CONVERTER_MAP, ACCEPTED_CONVERTERS } from "@/lib/constants";
 
-export function CurlToConverterTabs() {
+type Props = {
+  initialConverter: string;
+};
+
+export function CurlToConverterTabs({ initialConverter }: Props) {
   return (
-    <Tabs defaultValue="bash" className="w-full">
+    <Tabs value={initialConverter} className="w-full">
       <div className="border-b">
         <TabsList className="w-fit" variant="line">
-          <TabsTrigger value="bash">Bash</TabsTrigger>
-          <TabsTrigger value="python">Python</TabsTrigger>
-          <TabsTrigger value="nodejs">Node.js</TabsTrigger>
-          <TabsTrigger value="yt-dlp">yt-dlp</TabsTrigger>
-          <TabsTrigger value="fish">Fish</TabsTrigger>
-          <TabsTrigger value="zsh">Zsh</TabsTrigger>
-          <TabsTrigger value="cmd">Command Prompt</TabsTrigger>
-          <TabsTrigger value="powershell">PowerShell</TabsTrigger>
+          {ACCEPTED_CONVERTERS.map((value) => (
+            <TabsTrigger
+              key={value}
+              value={value}
+              nativeButton={false}
+              render={
+                <Link href={`/c/${value}`}>
+                  {ACCEPTED_CONVERTER_MAP[value]}
+                </Link>
+              }
+            ></TabsTrigger>
+          ))}
         </TabsList>
       </div>
 

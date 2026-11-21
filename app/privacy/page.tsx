@@ -16,7 +16,7 @@ export default function LegalPage() {
           <p>
             All media commands that are copied and pasted are not stored or
             transmitted by this project. Some historical data are stored in your
-            browser's local storage, which is also completely under your
+            browser&apos;s local storage, which is also completely under your
             control.
           </p>
 

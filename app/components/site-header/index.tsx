@@ -1,7 +1,8 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ThemeSwitcher } from "../theme-switcher";
 import NavTabs from "./nav-tabs";
+import { Suspense } from "react";
+import { SiteHeaderSkeleton } from "./skeleton";
 
 export function SiteHeader() {
   return (
@@ -18,7 +19,9 @@ export function SiteHeader() {
           data-slot="site-header-flex-container"
         >
           {/* Left side: Logo and navigation tabs */}
-          <NavTabs />
+          <Suspense fallback={<SiteHeaderSkeleton />}>
+            <NavTabs />
+          </Suspense>
 
           {/* Right side: Theme toggle, GitHub link */}
           <div
