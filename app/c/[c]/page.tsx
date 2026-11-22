@@ -1,6 +1,7 @@
 import { FfmpegBashConverter } from "@/app/components/converter/converter-bash";
 import { FfmpegNodeJsConverter } from "@/app/components/converter/converter-nodejs";
 import { FfmpegPythonConverter } from "@/app/components/converter/converter-python";
+import { FfmpegYtDlpConverter } from "@/app/components/converter/converter-yt-dlp";
 import { AcceptedConverter } from "@/lib/constants";
 
 const converterMap: Record<AcceptedConverter, React.ReactNode> = {
@@ -8,7 +9,7 @@ const converterMap: Record<AcceptedConverter, React.ReactNode> = {
   python: <FfmpegPythonConverter />,
   nodejs: <FfmpegNodeJsConverter />,
   fish: <div>Fish Converter</div>,
-  "yt-dlp": <div>yt-dlp Converter</div>,
+  "yt-dlp": <FfmpegYtDlpConverter />,
   zsh: <div>Zsh Converter</div>,
   cmd: <div>Command Prompt Converter</div>,
   powershell: <div>PowerShell Converter</div>,

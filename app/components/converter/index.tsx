@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FfmpegBashConverter } from "./converter-bash";
 import { FfmpegPythonConverter } from "./converter-python";
 import { FfmpegNodeJsConverter } from "./converter-nodejs";
+import { FfmpegYtDlpConverter } from "./converter-yt-dlp";
 import Link from "next/link";
 import { ACCEPTED_CONVERTER_MAP, ACCEPTED_CONVERTERS } from "@/lib/constants";
 
@@ -42,7 +43,7 @@ export function CurlToConverterTabs({ initialConverter }: Props) {
             <FfmpegNodeJsConverter />
           </TabsContent>
           <TabsContent value="yt-dlp" className="mt-0">
-            {/* yt-dlp converter component goes here */}
+            <FfmpegYtDlpConverter />
           </TabsContent>
           <TabsContent value="fish" className="mt-0">
             {/* Fish converter component goes here */}
